@@ -27,9 +27,9 @@ import java.util.UUID;
 @Component
 public class TencentCOSUtil {
     // COS的SecretId
-    private static String secretId = "AKIDICi6aNKKTygRG0CQvaCyrt5YQSdi7ePC";
+    private static String secretId = "ID";
     // COS的SecretKey
-    private static String secretKey = "medmyANkTD13FYtYSRXjzJarpmjnz6BU";
+    private static String secretKey = "密钥";
     //文件上传后访问路径的根路径，后面要最佳文件名字与类型
     private static String rootSrc = "资源桶地址/";
     //上传的存储桶的地域。

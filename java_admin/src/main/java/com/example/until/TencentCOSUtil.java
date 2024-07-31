@@ -31,11 +31,11 @@ public class TencentCOSUtil {
     // COS的SecretKey
     private static String secretKey = "medmyANkTD13FYtYSRXjzJarpmjnz6BU";
     //文件上传后访问路径的根路径，后面要最佳文件名字与类型
-    private static String rootSrc = "https://melo-1259406411.cos.ap-nanjing.myqcloud.com/";
+    private static String rootSrc = "资源桶地址/";
     //上传的存储桶的地域。
-    private static String bucketAddr = "ap-nanjing";
+    private static String bucketAddr = "ap-城市";
     //存储桶的名字
-    private static String bucketName = "melo-1259406411";
+    private static String bucketName = "桶名";
 
     /**
      * 1.调用静态方法getCosClient()就会获得COSClient实例

@@ -1,12 +1,12 @@
 server:
-  port: 9999
+  port: 8080
 # 连接数据库的信息
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://xiaoairen.icu:3306/cupcup?&characterEncoding=UTF-8&useSSL=false
-    username: CupCup
-    password: cup2403
+    url: jdbc:mysql://数据库地址:端口/数据库名?&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
     # 数据库连接池
     type: com.alibaba.druid.pool.DruidDataSource
   redis:

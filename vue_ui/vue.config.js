@@ -40,7 +40,7 @@ module.exports = {
 
     proxy: { // 设置请求代理,会向后端发送请求,且已经处理过跨域
       [process.env.VUE_APP_BASE_API]: {
-        target: 'http://localhost:9999/', // 后端服务器路径
+        target: 'http://localhost:端口/', // 后端服务器路径
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.lbMapper.PatientMapper">
+
+    <sql id="selectColumns">
+        patient_id,patient_num,patient_name,patient_sex,patient_age,patient_phone,opreator
+    </sql>
+    <!--增加用户-->
+    <insert id="addPatient">
+        insert into patient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="patientNum != null and patientNum != ''">patient_num,</if>
+            <if test="patientName != null and patientName != ''">patient_name,</if>
+            <if test="patientSex != null and patientSex != ''">patient_sex,</if>
+            <if test="patientAge != null and patientAge != ''">patient_age,</if>
+            <if test="patientPhone!= null and patientPhone != ''">patient_phone,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="patientNum != null">#{patientNum},</if>
+            <if test="patientName != null">#{patientName},</if>
+            <if test="patientSex != null">#{patientSex},</if>
+            <if test="patientAge != null">#{patientAge},</if>
+            <if test="patientPhone != null">#{patientPhone},</if>
+        </trim>
+    </insert>
+    <!--修改患者-->
+    <update id="editPatient">
+        update patient
+        <trim prefix="set" suffixOverrides=",">
+            <if test="patientNum != null">patient_num = #{patientNum},</if>
+            <if test="patientName != null">patient_name = #{patientName},</if>
+            <if test="patientSex != null">patient_sex = #{patientSex},</if>
+            <if test="patientAge != null">patient_age = #{patientAge},</if>
+            <if test="patientPhone != null">patient_phone = #{patientPhone},</if>
+        </trim>
+        where patient_num = #{patientNum}
+    </update>
+    <!--根据id删除-->
+    <delete id="deleteById">
+        delete from patient where patient_num = #{patientNum}
+    </delete>
+
+    <!--分页查询-->
+    <select id="findAll" resultType="com.example.entity.lbEntity.Patient">
+            select
+            <include refid="selectColumns"/>
+            from patient
+        <where>
+            <if test="patientNum != null and patientNum != ''">
+                and patient_num = #{patientNum}
+            </if>
+            <if test="patientName != null and patientName != ''">
+                and patient_name like concat('%',#{patientName},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件-->
+
+<mapper namespace="com.example.mapper.wwjMapper.DrugMapper">
+
+
+
+    <select id="getList" resultType="com.example.entity.wwjEntity.Drug">
+        select * from medicine
+        <where>
+            <if test="medicineName != null and medicineName != '' ">
+                        and medicine_name like concat('%',#{medicineName},'%')
+            </if>
+            <if test="medicineState != null and medicineState != '' ">
+                        and medicine_state = #{medicineState}
+            </if>
+            <if test="category != null and category != ''">
+                and category = #{category}
+            </if>
+
+        </where>
+    </select>
+
+<!--根据id删除-->
+    <delete id="delById">
+        delete from medicine where id = #{id}
+    </delete>
+
+
+    <insert id="addDrug">
+        insert into medicine(medicine_name,medicine_coding,specification,manufacturers,category,medicine_state,medicine_type,purchase_price,sell_price,create_time)
+        values(#{medicineName},#{medicineCoding},#{specification},#{manufacturers},#{category},#{medicineState},#{medicineType},#{purchasePrice},#{sellPrice},#{createTime})
+    </insert>
+
+    <update id="editDrug">
+        update
+        medicine
+        set
+        medicine_name = #{medicineName},
+        medicine_coding = #{medicineCoding},
+        specification = #{specification},
+        manufacturers = #{manufacturers},
+        category = #{category},
+        medicine_state = #{medicineState},
+        medicine_type = #{medicineType},
+        purchase_price = #{purchasePrice},
+        sell_price = #{sellPrice},
+        create_time = #{createTime}
+        where
+        id = #{id}
+    </update>
+
+    <select id="sort" resultType="com.example.entity.wwjEntity.Drug">
+        select *
+        from medicine
+        order by sell_num desc
+        limit 10;
+    </select>
+
+</mapper>

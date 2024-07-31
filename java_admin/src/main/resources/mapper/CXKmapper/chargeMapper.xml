@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件   charge_administration-->
+<mapper namespace="com.example.mapper.CXKmapper.chargeMapper">
+
+    <sql id="listName">
+        buill_id,order_number,order_type,patient_name,patient_sex,
+        patient_age,patient_contact,department,doctor_name,create_time,
+        amount_receivable,receive_amount,payment_method,charging_state,return_fee
+    </sql>
+
+
+    <select id="findAll" resultType="com.example.entity.CXKentity.Charge">
+        select
+        <include refid="listName"/>
+        from
+            charge_administration
+        <where>
+            <if test="orderType != null and orderType != ''">
+                and order_type = #{orderType}
+            </if>
+            <if test="orderNumber != null and orderNumber != ''">
+                and order_number = #{orderNumber}
+            </if>
+            <if test="patientName != null and patientName != ''">
+                and patient_name = #{patientName}
+            </if>
+            <if test="chargingState != null and chargingState != ''">
+                and charging_state = #{chargingState}
+            </if>
+        </where>
+    </select>
+
+
+
+    <!--删-->
+    <delete id="delById">
+        delete from charge_administration where order_number = #{id}
+    </delete>
+
+
+    <!--改-->
+    <update id="update">
+        update
+            charge_administration
+        set
+            order_type = #{orderType},
+            patient_name = #{patientName},
+            patient_sex = #{patientSex},
+            patient_age = #{patientAge},
+            patient_contact = #{patientContact},
+            department = #{department},
+            doctor_name = #{doctorName},
+            amount_receivable = #{amountReceivable},
+            receive_amount = #{receiveAmount},
+            payment_method = #{paymentMethod},
+            charging_state = #{chargingState},
+            return_fee = #{returnFee}
+        where
+            order_number = #{orderNumber}
+    </update>
+
+
+    <!--批量删除-->
+    <delete id="delByIds">
+        delete from charge_administration where order_number in
+        <foreach open="(" collection="list" item="ids" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!--添加-->
+    <insert id="addCharge">
+        insert into charge_administration (create_time,order_number,order_type,patient_name,patient_sex,patient_age,patient_contact,department,doctor_name,
+        amount_receivable,receive_amount,payment_method,charging_state,return_fee) values
+        (#{createTime},#{orderNumber},#{orderType},#{patientName},#{patientSex},#{patientAge},#{patientContact},#{department},#{doctorName},
+        #{amountReceivable},#{receiveAmount},#{paymentMethod},#{chargingState},#{returnFee})
+    </insert>
+    <select id="findNumber" resultType="java.lang.Integer">
+        select order_number from charge_administration order by order_number desc limit 1
+    </select>
+    <select id="getDepartment" resultType="java.lang.String">
+        select department from charge_administration group by department
+    </select>
+    <select id="getNumber" resultType="java.util.Map">
+        select department name,count(department) num from charge_administration group by department
+    </select>
+</mapper>

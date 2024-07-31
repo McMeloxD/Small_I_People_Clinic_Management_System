@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件   charge_administration-->
+<mapper namespace="com.example.mapper.CXKmapper.appointmentsMapper">
+
+    <resultMap id="AppointmentsMap" type="AppointmentsVO">
+        <id column="appointment_id" property="appointmentId"/>
+        <result column="patient_id" property="patientId"/>
+        <result column="appointment_date" property="appointmentDate"/>
+        <result column="doctor_name" property="doctorName"/>
+        <association property="patients" javaType="patients">
+            <id column="patient_id" property="patientId"/>
+            <result column="patient_name" property="patientName"/>
+            <result column="patient_sex" property="patientSex"/>
+            <result column="patient_age" property="patientAge"/>
+            <result column="patient_phone" property="patientPhone"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="AppointmentsMap">
+        select a.appointment_id, p.patient_name, p.patient_sex,p.patient_age,p.patient_phone,a.appointment_date,a.doctor_name
+        from patients p,appointments a where p.patient_id = a.patient_id and p.patient_name like concat ('%',#{patientName},'%')
+    </select>
+
+
+    <delete id="delById">
+        delete from appointments where appointment_id = #{id}
+    </delete>
+    <update id="update">
+        update
+            appointments
+        set
+            appointment_date = #{appointmentDate},
+            doctor_name = #{doctorName}
+        where
+            appointment_id = #{appointmentId}
+    </update>
+</mapper>

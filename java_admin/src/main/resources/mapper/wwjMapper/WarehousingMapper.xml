@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件-->
+
+<mapper namespace="com.example.mapper.wwjMapper.WarehousingMapper">
+
+    <select id="getList" resultType="com.example.entity.wwjEntity.Warehousing">
+        select *
+        from warehousing
+        <where>
+            <if test="type != null and type != ''">
+              and  type like concat('%',#{type},'%')
+            </if>
+            <if test="reviewStatus != null and reviewStatus != ''">
+                and review_status like concat('%',#{reviewStatus},'%')
+            </if>
+            <if test="warehousingOrder != null and warehousingOrder != ''">
+                and warehousing_order like concat('%',#{searchQuery},'%')
+            </if>
+            <if test="supplierName != null and supplierName != ''">
+                and supplier_name like concat('%',#{searchQuery},'%')
+            </if>
+
+       </where>
+    </select>
+
+
+
+    <delete id="delById">
+        delete from warehousing where id = #{id}
+    </delete>
+</mapper>

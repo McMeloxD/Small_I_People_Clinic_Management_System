@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件   charge_administration-->
+<mapper namespace="com.example.mapper.CXKmapper.supplierMapper">
+    <sql id="supplierListName">
+        supplier_id,
+        supplier_number, supplier_name, contacts,
+        phone, create_time, supplier_user, supplier_state
+    </sql>
+
+
+
+    <select id="findAll" resultType="com.example.entity.CXKentity.Supplier">
+        select
+            <include refid="supplierListName"/>
+        from
+            supplier
+        <where>
+            <if test="supplierName != null and supplierName != ''">
+                and supplier_name like concat  ('%',#{supplierName},'%')
+            </if>
+        </where>
+    </select>
+
+
+
+    <delete id="delById">
+        delete from supplier where supplier_number = #{id}
+    </delete>
+
+    <update id="update">
+        update
+            supplier
+        set
+            supplier_name = #{supplierName},
+            contacts = #{contacts},
+            phone = #{phone},
+            supplier_user = #{supplierUser},
+            supplier_state = #{supplierState}
+        where
+            supplier_number = #{supplierNumber}
+    </update>
+
+    <delete id="delByIds">
+        delete from supplier where supplier_number in
+        <foreach open="(" collection="list" item="ids" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <insert id="addSupplier">
+        insert into supplier (supplier_name,contacts,phone,supplier_user,supplier_state,supplier_number,create_time)
+        values (#{supplierName},#{contacts},#{phone},#{supplierUser},#{supplierState},#{supplierNumber},#{createTime})
+    </insert>
+
+
+    <select id="findNumber" resultType="java.lang.Integer">
+        select supplier_number from supplier order by supplier_number desc limit 1
+    </select>
+
+
+
+    <!--导入-->
+    <insert id="saveBatch">
+        insert into supplier
+            (supplier_number,supplier_name,contacts,phone,create_time,supplier_user,supplier_state)
+        values
+        <foreach collection="list" item="supp" separator=",">
+            (#{supp.supplierNumber},
+            #{supp.supplierName},
+            #{supp.contacts},
+            #{supp.phone},
+            #{supp.createTime},
+            #{supp.supplierUser},
+            #{supp.supplierState})
+        </foreach>
+    </insert>
+
+    <!--导出-->
+    <select id="findAllz" resultType="com.example.entity.CXKentity.Supplier">
+        select * from supplier
+    </select>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件-->
+<mapper namespace="com.example.mapper.MercuryMapper.TemporaryInfoMapper">
+    <insert id="addTemPatient">
+        insert into temporary_info(patient_name,patient_card,patient_age,dob,patient_sex,patient_contact,id_card_num,operator)
+        values(#{patientName},#{patientCard},#{patientAge},#{dob},#{patientSex},#{patientContact},#{idCardNum},#{operator})
+    </insert>
+    <delete id="clearInfo">
+        DELETE FROM temporary_info
+    </delete>
+    <select id="findTemPat" resultType="com.example.entity.MercuryEntity.TemporaryInfo">
+        select * from temporary_info
+    </select>
+</mapper>

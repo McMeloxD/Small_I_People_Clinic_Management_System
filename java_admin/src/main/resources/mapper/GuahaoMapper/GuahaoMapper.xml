@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件-->
+<mapper namespace="com.example.mapper.GuahaoMapper.GuahaoMapper">
+    <!--  新增挂号信息  -->
+    <insert id="guahaoService">
+        INSERT INTO registration
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <!-- id 字段不需要手动插入，由数据库自动生成 -->
+            <if test="registrationCoding != null">registration_coding,</if>
+            <if test="registrationFee != null">registration_fee,</if>
+            <if test="departments != null">departments,</if>
+            <if test="receptionType != null">reception_type,</if>
+            <if test="doctorName != null">doctor_name,</if>
+            <if test="consultationFee != null">consultation_fee,</if>
+            <if test="receivable != null">receivable,</if>
+            <if test="registrationDate != null">registration_date,</if>
+            <if test="patientName != null">patient_name,</if>
+            <if test="patientSex != null">patient_sex,</if>
+            <if test="patientAge != null">patient_age,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <!-- id 字段不需要手动插入，由数据库自动生成 -->
+            <if test="registrationCoding != null">#{registrationCoding},</if>
+            <if test="registrationFee != null">#{registrationFee},</if>
+            <if test="departments != null">#{departments},</if>
+            <if test="receptionType != null">#{receptionType},</if>
+            <if test="doctorName != null">#{doctorName},</if>
+            <if test="consultationFee != null">#{consultationFee},</if>
+            <if test="receivable != null">#{receivable},</if>
+            <if test="registrationDate != null">#{registrationDate},</if>
+            <if test="patientName != null">#{patientName},</if>
+            <if test="patientSex != null">#{patientSex},</if>
+            <if test="patientAge != null">#{patientAge},</if>
+        </trim>
+    </insert>
+    <!--  修改信息  -->
+    <update id="editGuahaoInfo">
+        UPDATE registration
+        <set>
+            <!-- 根据字段是否为空来动态更新 -->
+            <if test="registrationCoding != null">
+                registration_coding = #{registrationCoding},
+            </if>
+            <if test="registrationFee != null">
+                registration_fee = #{registrationFee},
+            </if>
+            <if test="registrationState != null">
+                registration_state = #{registrationState},
+            </if>
+            <if test="departments != null">
+                departments = #{departments},
+            </if>
+            <if test="receptionType != null">
+                reception_type = #{receptionType},
+            </if>
+            <if test="doctorName != null">
+                doctor_name = #{doctorName},
+            </if>
+            <if test="consultationFee != null">
+                consultation_fee = #{consultationFee},
+            </if>
+            <if test="receivable != null">
+                receivable = #{receivable},
+            </if>
+            <if test="registrationDate != null">
+                registration_Date = #{registrationDate},
+            </if>
+            <if test="patientName != null">
+                patient_name = #{patientName},
+            </if>
+            <if test="patientSex != null">
+                patient_sex = #{patientSex},
+            </if>
+            <if test="patientAge != null">
+                patient_age = #{patientAge},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--  根据患者姓名修改就诊状态  -->
+    <update id="jiuZhen">
+        update registration set registration_state = 1 where patient_name = #{patientName}
+    </update>
+
+    <!--  根据单号删除挂号信息  -->
+    <delete id="delByCoding">
+        delete from registration where registration_coding = #{registrationCoding}
+    </delete>
+
+    <select id="findAllGuahaoInfos" resultType="Registration">
+        select *
+        from registration
+        <where>
+            <if test="departments != null and departments != ''">
+                and departments = #{departments}
+            </if>
+            <if test="doctorName != null and doctorName != ''">
+                and doctor_name = #{doctorName}
+            </if>
+            <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+                and registration_date &gt; #{startDate} and registration_date &lt; #{endDate}
+            </if>
+            <if test="patientName != null and patientName != ''">
+                and patient_name like concat ('%',#{patientName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getNewCode" resultType="java.lang.String">
+        select registration_coding from registration
+        order by id desc
+        limit 1
+    </select>
+    <!--  根据部门找医生  -->
+    <select id="findDoctors" resultType="Doctor">
+        select doctor_name from doctor
+        where departments = #{departments}
+    </select>
+
+    <!--  查询所有数据不分页  -->
+    <select id="findAllGuahaoInfosBfy" resultType="Registration">
+        select *
+        from registration
+    </select>
+
+    <!--  患者病科统计  -->
+    <select id="getBingkeECharts" resultType="java.util.HashMap">
+        select  departments,count(id) num from registration group by departments
+    </select>
+</mapper>

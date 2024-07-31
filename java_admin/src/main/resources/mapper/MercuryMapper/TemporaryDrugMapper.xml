@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件-->
+<mapper namespace="com.example.mapper.MercuryMapper.TemporaryDrugMapper">
+    <insert id="addTemDrug">
+        insert into temporary_drug(medicine_coding,medicine_name,specification,buy_num,unit,sell_price)
+        values(#{medicineCoding},#{medicineName},#{specification},#{buyNum},#{unit},#{sellPrice})
+    </insert>
+
+    <delete id="delTemDrug">
+        delete from temporary_drug where id = #{id}
+    </delete>
+
+    <delete id="clearDrug">
+        DELETE FROM temporary_drug
+    </delete>
+
+    <select id="findAllTemDrug" resultType="com.example.entity.MercuryEntity.TemporaryDrug">
+        select * from temporary_drug
+    </select>
+
+    <select id="sum" resultType="java.lang.Double">
+        SELECT SUM(sell_price)
+        FROM temporary_drug
+    </select>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件-->
+<mapper namespace="com.example.mapper.MercuryMapper.DetailsMapper">
+
+    <sql id="detailsFields">
+        id,patient_name,patient_card,patient_age,dob,patient_sex,patient_contact,id_card_num,fee_name,specification,unit_price,num,unit,total_price,retail_amount,discount,discount_amount
+    </sql>
+
+    <insert id="saveBatch">
+        insert into medicine (medicine_coding,
+            medicine_name,
+            specification,
+            category,
+            sell_price,
+            manufacturers,
+            sell_num,
+            repertory_num,
+            buy_num)
+        values
+        <foreach collection="list" item="drug" separator=",">
+            (#{drug.medicineCoding},
+            #{drug.medicineName},
+            #{drug.specification},#{drug.category},
+            #{drug.sellPrice},
+            #{drug.manufacturers},
+            #{drug.sellNum},
+            #{drug.repertoryNum},
+            #{drug.buyNum})
+        </foreach>
+    </insert>
+    <insert id="addPicture">
+        insert into picture(avatar) values (#{avatar})
+    </insert>
+
+    <update id="sellDrug">
+        update  medicine
+        set repertory_num = repertory_num - 1,sell_num = sell_num + 1
+        where medicine_name in
+        <foreach open="(" collection="list" item="medicineName" separator="," close=")">
+            #{medicineName}
+        </foreach>
+    </update>
+
+
+    <select id="findAllDetails" resultType="com.example.entity.MercuryEntity.Details">
+
+        select
+        <include refid="detailsFields"/>
+        from details
+    </select>
+    <select id="findAllDrug" resultType="com.example.entity.wwjEntity.Drug">
+        select * from medicine
+    </select>
+
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace关联fxml文件和接口文件-->
+<mapper namespace="com.example.mapper.LogMapper.LogMapper">
+
+
+    <insert id="add">
+        insert into log(operateName,className,methodName,operateTime,result,costTime,operateUser)
+        values(#{operateName},#{className},#{methodName},#{operateTime},#{result},#{costTime},#{operateUser})
+    </insert>
+
+    <delete id="delLog">
+        delete from log where id = #{id}
+    </delete>
+
+    <select id="findAll" resultType="com.example.entity.Log.Log">
+        select * from log
+        order by id desc
+    </select>
+
+</mapper>

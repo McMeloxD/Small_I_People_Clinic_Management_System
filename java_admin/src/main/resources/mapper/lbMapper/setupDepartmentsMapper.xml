@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.lbMapper.setupDepartmentsMapper">
+    <sql id="selectColumns">
+        departments_id,departments_id_card,departments_name,departments_text,departments_create_time,departments_create_by, departments_status
+    </sql>
+    <!--添加科室信息-->
+    <insert id="addDepartments">
+        insert into departments
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="departmentsIdCard != null and departmentsIdCard != ''">departments_id_card,</if>
+            <if test="departmentsName != null and departmentsName != ''">departments_name,</if>
+            <if test="departmentsText != null and departmentsText != ''">departments_text,</if>
+            <if test="departmentsCreateTime != null and departmentsCreateTime !=''">departments_create_time,</if>
+            <if test="departmentsCreateBy != null and departmentsCreateBy != ''">departments_create_by,</if>
+            <if test="departmentsStatus != null and departmentsStatus != ''">departments_status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="departmentsIdCard != null and departmentsIdCard != ''">#{departmentsIdCard},</if>
+            <if test="departmentsName != null and departmentsName != ''">#{departmentsName},</if>
+            <if test="departmentsText != null and departmentsText != ''">#{departmentsText},</if>
+            <if test="departmentsCreateTime != null and departmentsCreateTime !=''">#{departmentsCreateTime},</if>
+            <if test="departmentsCreateBy != null and departmentsCreateBy != ''">#{departmentsCreateBy},</if>
+            <if test="departmentsStatus != null and departmentsStatus != ''">#{departmentsStatus},</if>
+        </trim>
+    </insert>
+    <update id="editDepartments">
+        update departments
+        <trim prefix="set" suffixOverrides=",">
+            <if test="departmentsIdCard != null and departmentsIdCard != ''">departments_id_card = #{departmentsIdCard},</if>
+            <if test="departmentsName != null and departmentsName != ''">departments_name = #{departmentsName},</if>
+            <if test="departmentsText != null and departmentsText != ''">departments_text = #{departmentsText},</if>
+            <if test="departmentsCreateTime != null and departmentsCreateTime !=''">departments_create_time = #{departmentsCreateTime},</if>
+            <if test="departmentsCreateBy != null and departmentsCreateBy != ''">departments_create_by = #{departmentsCreateBy},</if>
+            <if test="departmentsStatus != null and departmentsStatus != ''">departments_status = #{departmentsStatus},</if>
+        </trim>
+        where departments_id = #{departmentsId}
+    </update>
+    <!--删除科室信息-->
+    <delete id="deleteById">
+        delete from departments where departments_id = #{departmentsId}
+    </delete>
+    <!--分页/模糊查询-->
+    <select id="findAll" resultType="com.example.entity.lbEntity.setupDepartments">
+        select
+        <include refid="selectColumns"/>
+        from departments
+        <where>
+            <if test="departmentName != null and departmentName != ''">
+                and departments_name = #{departmentsName}
+            </if>
+        </where>
+    </select>
+</mapper>

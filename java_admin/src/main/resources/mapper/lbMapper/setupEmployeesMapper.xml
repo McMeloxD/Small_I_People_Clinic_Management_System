@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.lbMapper.setupEmployeesMapper">
+<sql id="selectColumns">
+    employees_id,employees_id_card,employees_name,
+    employees_sex,employees_age,employees_phone,
+    employees_clinic,departments_name,role_name,
+    employees_create_time,employees_by,employees_status
+    </sql>
+    <insert id="addEmployees">
+        insert into employees
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="employeesIdCard != null and employeesIdCard != ''">employees_id_card,</if>
+            <if test="employeesName != null and employeesName != ''">employees_name,</if>
+            <if test="employeesSex != null and employeesSex != ''">employees_sex,</if>
+            <if test="employeesAge != null and employeesAge!= ''">employees_age,</if>
+            <if test="employeesPhone != null and employeesPhone != ''">employees_phone,</if>
+            <if test="employeesClinic != null and employeesClinic != ''">employees_clinic,</if>
+            <if test="departmentsName != null and departmentsName != ''">departments_name,</if>
+            <if test="roleName != null and roleName != ''">role_name,</if>
+            <if test="employeesCreateTime != null">employees_create_time,</if>
+            <if test="employeesBy != null and employeesBy != ''">employees_by,</if>
+            <if test="employeesStatus != null and employeesStatus != ''">employees_status,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="employeesIdCard != null and employeesIdCard != ''">#{employeesIdCard},</if>
+            <if test="employeesName != null and employeesName != ''">#{employeesName},</if>
+            <if test="employeesSex != null and employeesSex != ''">#{employeesSex},</if>
+            <if test="employeesAge != null and employeesAge != ''">#{employeesAge},</if>
+            <if test="employeesPhone != null and employeesPhone != ''">#{employeesPhone},</if>
+            <if test="employeesClinic != null and employeesClinic != ''">#{employeesClinic},</if>
+            <if test="departmentsName != null and departmentsName != ''">#{departmentsName},</if>
+            <if test="roleName != null and roleName != ''">#{roleName},</if>
+            <if test="employeesCreateTime != null">#{employeesCreateTime},</if>
+            <if test="employeesBy != null and employeesBy != ''">#{employeesBy},</if>
+            <if test="employeesStatus != null and employeesStatus != ''">#{employeesStatus},</if>
+        </trim>
+    </insert>
+    <update id="editEmployees">
+        update employees
+        <trim prefix="set" suffixOverrides=",">
+            <if test="employeesIdCard != null and employeesIdCard != ''">employees_id_card = #{employeesIdCard},</if>
+            <if test="employeesName != null and employeesName != ''">employees_name = #{employeesName},</if>
+            <if test="employeesSex != null and employeesSex != ''">employees_sex = #{employeesSex},</if>
+            <if test="employeesAge != null and employeesAge != ''">employees_age = #{employeesAge},</if>
+            <if test="employeesPhone != null and employeesPhone != ''">employees_phone = #{employeesPhone},</if>
+            <if test="employeesClinic != null and employeesClinic != ''">employees_clinic = #{employeesClinic},</if>
+            <if test="departmentsName != null and departmentsName != ''">departments_name = #{departmentsName},</if>
+            <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+            <if test="employeesCreateTime != null">employees_create_time = #{employeesCreateTime},</if>
+            <if test="employeesBy != null and employeesBy != ''">employees_by = #{employeesBy}</if>
+        </trim>
+            where employees_id = #{employeesId}
+    </update>
+    <delete id="deleteById">
+        delete from employees where employees_id = #{employeesId}
+    </delete>
+
+    <select id="findAll" resultType="com.example.entity.lbEntity.setupEmployees">
+        select
+        <include refid="selectColumns"/>
+        from employees
+        <where>
+            <if test="departmentsName != null and departmentsName != ''">
+                and departments_name = #{departmentsName}
+            </if>
+            <if test="employeesName != null and employeesName != ''">
+                and employees_name like concat('%',#{employeesName},'%')
+            </if>
+
+        </where>
+    </select>
+    <select id="findSex4Echarts" resultType="java.util.Map">
+        select
+        employees_sex sex,
+        count(employees_sex) as value
+        from employees
+        group by employees_sex
+    </select>
+</mapper>
